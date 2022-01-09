@@ -42,11 +42,9 @@ public class Miner extends RobotPlayer{
             Direction dir2 = directions[rng.nextInt(directions.length)];
             if (rc.canMove(oneLine)) { // Move in a straight line determined earlier
                 rc.move(oneLine);
-                System.out.println("I moved!");
             } else if (rc.canMove(dir2)) { // Most likely hit a wall, set new oneLine and move there
                 rc.move(dir2);
                 oneLine = dir2;
-                System.out.println("I moved in the backup location");
             }
         }
 
