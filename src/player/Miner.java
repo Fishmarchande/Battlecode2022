@@ -9,6 +9,7 @@ public class Miner extends RobotPlayer{
     static boolean foundLead = false;
     //static boolean miningLead = false; // UNUSED
     static Direction oneLine = null;
+    static int currentSource = -1;
     public static void run(RobotController rc) throws GameActionException {
 
         if(turnCount == 1){
@@ -30,12 +31,16 @@ public class Miner extends RobotPlayer{
         if(leadSources.length > 0){ // if there is a place for us to mine, then lets try to go to the first one
             foundLead = true;
             leadSource = leadSources[0];
+            currentSource = 0;
         } else {
             foundLead = false;
         }
         if(foundLead){
-            if(rc.canMove(rc.getLocation().directionTo(leadSource))) {
+            if(rc.canMove(rc.getLocation().directionTo(leadSource)) && rc.senseLead(leadSource) > 1) {
                 rc.move(rc.getLocation().directionTo(leadSource));
+            } else {
+                currentSource++;
+                leadSource = leadSources[currentSource];
             }
         }
         if(!foundLead){// looking for lead to mine
