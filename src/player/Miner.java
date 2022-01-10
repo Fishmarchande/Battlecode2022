@@ -17,7 +17,7 @@ public class Miner extends RobotPlayer{
         }
 
         for (Direction dir:directions){
-            if(rc.canMineLead(rc.adjacentLocation(dir))){
+            if(rc.canMineLead(rc.adjacentLocation(dir)) && rc.senseLead(rc.adjacentLocation(dir)) > 1){
                 rc.mineLead(rc.adjacentLocation(dir));
             }
         }
