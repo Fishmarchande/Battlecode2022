@@ -9,38 +9,43 @@ public class Miner extends RobotPlayer{
     static boolean foundLead = false;
     //static boolean miningLead = false; // UNUSED
     static Direction oneLine = null;
-    static int currentSource = -1;
+    static boolean skip = false;
+    static int runAway = 0;
     public static void run(RobotController rc) throws GameActionException {
 
         if(turnCount == 1){
             origin = rc.getLocation();
             oneLine = directions[rng.nextInt(directions.length)];
         }
-
+        if (runAway > 0) {
+            runAway--;
+        }
+        if (runAway == 0 && skip) {
+            skip = false;
+        }
         for (Direction dir:directions){
-            if(rc.canMineLead(rc.adjacentLocation(dir)) && rc.senseLead(rc.adjacentLocation(dir)) > 1){
+            if(rc.canMineLead(rc.adjacentLocation(dir)) && rc.senseLead(rc.adjacentLocation(dir)) == 1) {
+                skip = true;
+                runAway += 20;
+            }
+            else if(rc.canMineLead(rc.adjacentLocation(dir)) && rc.senseLead(rc.adjacentLocation(dir)) > 1){
                 rc.mineLead(rc.adjacentLocation(dir));
             }
         }
 
 
-
         if(turnCount % 4 == 0) { // Check for lead sources (within sense range of 20 radii squared) every 4 turns and put them in the array leadSources
-            leadSources = rc.senseNearbyLocationsWithLead(20); // 100 bytecode, not that bad
+            leadSources = rc.senseNearbyLocationsWithLead(-1); // 100 bytecode, not that bad
         }
-        if(leadSources.length > 0){ // if there is a place for us to mine, then lets try to go to the first one
+        if(leadSources.length > 0 && !skip){ // if there is a place for us to mine, then lets try to go to the first one
             foundLead = true;
             leadSource = leadSources[0];
-            currentSource = 0;
         } else {
             foundLead = false;
         }
         if(foundLead){
-            if(rc.canMove(rc.getLocation().directionTo(leadSource)) && rc.senseLead(leadSource) > 1) {
+            if(rc.canMove(rc.getLocation().directionTo(leadSource))) {
                 rc.move(rc.getLocation().directionTo(leadSource));
-            } else {
-                currentSource++;
-                leadSource = leadSources[currentSource];
             }
         }
         if(!foundLead){// looking for lead to mine
