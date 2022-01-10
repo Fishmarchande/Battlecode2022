@@ -4,6 +4,7 @@ import battlecode.common.*;
 
 public class Archon extends RobotPlayer{
     static int minerCount = 0;
+    static boolean panic = false;
     public static void run(RobotController rc) throws GameActionException {
         Direction dir = directions[rng.nextInt(directions.length)];
             // Let's try to build a miner.
@@ -15,6 +16,11 @@ public class Archon extends RobotPlayer{
             if( minerCount > 3 && rc.canBuildRobot(RobotType.SOLDIER, dir)){
                 rc.setIndicatorString("Building a soldier");
                 rc.buildRobot(RobotType.SOLDIER, dir);
+            }
+            if (rc.senseNearbyRobots(-1, rc.getTeam().opponent()).length >= rc.senseNearbyRobots(-1, rc.getTeam()).length) {
+                panic = true; // TO DO: Turn this into a battle report and call reinforcements to defend and workers to repair
+            } else {
+                panic = false;
             }
     }
 }
