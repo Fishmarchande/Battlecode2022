@@ -17,10 +17,6 @@ public class Archon extends RobotPlayer{
                 rc.setIndicatorString("Building a soldier");
                 rc.buildRobot(RobotType.SOLDIER, dir);
             }
-            if (rc.senseNearbyRobots(-1, rc.getTeam().opponent()).length >= rc.senseNearbyRobots(-1, rc.getTeam()).length) {
-                panic = true; // TO DO: Turn this into a battle report and call reinforcements to defend and workers to repair
-            } else {
-                panic = false;
-            }
+        panic = rc.senseNearbyRobots(-1, rc.getTeam().opponent()).length >= rc.senseNearbyRobots(-1, rc.getTeam()).length; // TO DO: Turn this into a battle report and call reinforcements to defend and workers to repair
     }
 }
