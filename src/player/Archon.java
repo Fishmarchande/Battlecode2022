@@ -5,6 +5,12 @@ import battlecode.common.*;
 public class Archon extends RobotPlayer{
     static int minerCount = 0;
     public static void run(RobotController rc) throws GameActionException {
+
+        int a = rc.readSharedArray(0);
+        if(a != 0){
+            System.out.println(a);
+        }
+
         Direction dir = directions[rng.nextInt(directions.length)];
             // Let's try to build a miner.
             rc.setIndicatorString("Trying to build a miner");
