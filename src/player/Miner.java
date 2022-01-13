@@ -7,13 +7,14 @@ public class Miner extends RobotPlayer{
     static MapLocation leadSource = null;
     static MapLocation[]leadSources = null;
     static boolean foundLead = false;
-    //static boolean miningLead = false; // UNUSED
+
     static Direction oneLine = null;
-    static boolean skip = false;
-    static int runAway = 0;
+
     static RobotInfo[] enemies;
+
     static boolean danger = false;
     static int avoidIndex = 0;
+
     public static void run(RobotController rc) throws GameActionException {
 
         if(turnCount == 1){
@@ -21,12 +22,6 @@ public class Miner extends RobotPlayer{
             oneLine = directions[rng.nextInt(directions.length)];
         }
 
-        if (runAway > 0) {
-            runAway--;
-        }
-        if (runAway == 0 && skip) {
-            skip = false;
-        }
         enemies = rc.senseNearbyRobots(-1, rc.getTeam().opponent());
         if (enemies.length > 0) {
             danger = false;
@@ -37,7 +32,6 @@ public class Miner extends RobotPlayer{
                 }
             }
             if (danger) {
-                skip = true; //Don't mine when getting chased
                 if (rc.canMove(rc.getLocation().directionTo(enemies[avoidIndex].getLocation()).opposite())) {
                     rc.move(rc.getLocation().directionTo(enemies[avoidIndex].getLocation()).opposite()); //Run opposite direction from enemy
                     System.out.println("Saw an hostile, running away");
@@ -45,25 +39,29 @@ public class Miner extends RobotPlayer{
             }
         }
         for (Direction dir:directions){
-            if(rc.canMineLead(rc.adjacentLocation(dir)) && rc.senseLead(rc.adjacentLocation(dir)) == 1) {
-                skip = true;
-                runAway += 20;
-            }
-            else if(rc.canMineLead(rc.adjacentLocation(dir)) && rc.senseLead(rc.adjacentLocation(dir)) > 1){
+            if(rc.canMineLead(rc.adjacentLocation(dir))){
                 rc.mineLead(rc.adjacentLocation(dir));
             }
+            else if (rc.canMineLead(rc.getLocation())) {
+                rc.mineLead(rc.getLocation());
+            }
         }
-
 
         if(turnCount % 4 == 0) { // Check for lead sources (within sense range of 20 radii squared) every 4 turns and put them in the array leadSources
+            leadSource = null;
             leadSources = rc.senseNearbyLocationsWithLead(-1); // 100 bytecode, not that bad
+            int i = 0;
+            for (MapLocation source:leadSources) {
+                if(!rc.getLocation().equals(source) && rc.senseNearbyRobots(source,0,rc.getTeam()).length>0 && rc.senseLead(source) == 1) {
+                    leadSources[i] = null;
+                } else {
+                    leadSource = leadSources[i];
+                }
+                i++;
+            }
         }
-        if(leadSources.length > 0 && !skip){ // if there is a place for us to mine, then lets try to go to the first one
-            foundLead = true;
-            leadSource = leadSources[0];
-        } else {
-            foundLead = false;
-        }
+        // if there is a place for us to mine, then lets try to go to the first one
+        foundLead = leadSource != null;
         if(foundLead){
             if(rc.canMove(rc.getLocation().directionTo(leadSource))) {
                 rc.move(rc.getLocation().directionTo(leadSource));
