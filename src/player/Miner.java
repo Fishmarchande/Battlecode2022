@@ -29,7 +29,7 @@ public class Miner {
 
     public static void run(RobotController rc) throws GameActionException {
 
-        if(turnCount == 1){
+        if(turnCount == 0){
             origin = rc.getLocation();
             oneLine = directions[rng.nextInt(directions.length)];
         }
