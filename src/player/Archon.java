@@ -2,7 +2,7 @@ package player;
 import battlecode.common.*;
 
 
-public class Archon extends RobotPlayer{
+public class Archon extends Bot{
     static int minerCount = 0;
     static boolean panic = false;
     public static void run(RobotController rc) throws GameActionException {

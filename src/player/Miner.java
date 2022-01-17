@@ -2,7 +2,7 @@ package player;
 import battlecode.common.*;
 
 
-public class Miner extends RobotPlayer{
+public class Miner extends Bot{
     static MapLocation origin;
     static MapLocation leadSource = null;
     static MapLocation[]leadSources = null;

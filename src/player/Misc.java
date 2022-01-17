@@ -1,8 +1,8 @@
 package player;
 import battlecode.common.*;
 
-public class Misc extends RobotPlayer {
-    public static boolean tryMove(RobotController rc, Direction dir) throws GameActionException {
+public class Misc extends Bot {
+    public static boolean tryMove(Direction dir) throws GameActionException {
         if(rc.canMove(dir)){
             rc.move(dir);
             return true;
@@ -12,7 +12,7 @@ public class Misc extends RobotPlayer {
         }
 
     }
-    public static boolean tryAttack(RobotController rc, MapLocation loc) throws GameActionException{
+    public static boolean tryAttack(MapLocation loc) throws GameActionException{
         if(rc.canAttack(loc)){
             rc.attack(loc);
             return true;
@@ -21,15 +21,18 @@ public class Misc extends RobotPlayer {
             return false;
         }
     }
-    public static void doWander(RobotController rc, Direction oneLine) throws GameActionException{
+    public static void doWander(Direction oneLine) throws GameActionException{
 
         rc.setIndicatorString("wandering");
         Direction dir2 = directions[rng.nextInt(directions.length)];
-        if (rc.canMove(oneLine)) { // Move in a straight line determined earlier
-            rc.move(oneLine);
-        } else if (rc.canMove(dir2)) { // Most likely hit a wall, set new oneLine and move there
-            rc.move(dir2);
+
+
+        if (tryMove(oneLine)) { // Move in a straight line determined earlier
+            rc.setIndicatorString("Moved OneLine");
+        }
+        else if (tryMove(dir2)) { // Most likely hit a wall, set new oneLine and move there
             oneLine = dir2;
+            rc.setIndicatorString("Moved Random");
         }
     }
 }

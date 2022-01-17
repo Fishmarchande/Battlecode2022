@@ -3,24 +3,27 @@ import battlecode.common.*;
 import static player.communication.*; // IDK WHY THIS IS NECCESARY TODO FIX THIS
 import static player.Misc.*;
 
-
-public class Soldier extends RobotPlayer {
+public class Soldier extends Bot {
     static MapLocation targetLocation = null;
     static MapLocation reportLocation = null;
     static boolean testing = true;// this checks if we already set our testnig target location
     static boolean scouting = false;
-    static int robotId;
     static Direction oneLine;
-    static RobotInfo[] enemies;
-    static RobotInfo[] friends;
     static boolean followingReport = false;
     static boolean onSite = false;
     static int turnsWithoutCombat = 0;
     static int currentCr = -1;
+    static int closestLoc;
 
     public static void run(RobotController rc) throws GameActionException {
-        enemies = rc.senseNearbyRobots(20, rc.getTeam().opponent());
-        friends = rc.senseNearbyRobots(20, rc.getTeam());
+        if(turnCount == 0){
+            Bot.init(rc);
+        }
+        Bot.updateInfo();
+
+
+
+
         robotId = rc.getID();
         if(turnCount == 1) {
             oneLine = directions[rng.nextInt(directions.length)];// random search taken from miner bot
@@ -64,8 +67,18 @@ public class Soldier extends RobotPlayer {
 
             if(!followingReport) { // if we haven't found combat yet, lets go to nearest report
                 for (int i = 0; i < 9; i++) {// look for open combat report
+                    closestLoc = 1000000; // Closest known location (arbitarily high value given), we go to closest
                     int a = rc.readSharedArray(i);
                     if (a != 0) {// found a combat report!
+                        MapLocation l = getCombatReportLoc(a);
+                        if (rc.getLocation().distanceSquaredTo(l) < closestLoc ){// only go if this is closest CR
+                            closestLoc = rc.getLocation().distanceSquaredTo(l);
+                            targetLocation = getCombatReportLoc(a);
+                            rc.setIndicatorString("going to location" + String.valueOf(a));
+                            followingReport = true;
+                            currentCr = i; // keep track of our combat report
+                        }
+
                         targetLocation = getCombatReportLoc(a);
                         rc.setIndicatorString("going to location" + String.valueOf(a));
                         followingReport = true;
@@ -74,7 +87,7 @@ public class Soldier extends RobotPlayer {
                 }
             }
             if(targetLocation!= null) {
-                rc.setIndicatorString(("Moving to site ") + String.valueOf(targetLocation));
+                rc.setIndicatorString(("Moving to site ") + (targetLocation));
                 if (rc.canMove(rc.getLocation().directionTo(targetLocation))) {
                     rc.move(rc.getLocation().directionTo(targetLocation));
                 } else {
@@ -97,8 +110,9 @@ public class Soldier extends RobotPlayer {
                     // and if we find nothing then destroy current report and move on
             if(enemies.length > 0){
                 turnsWithoutCombat = 0;
-                Direction randomDir = directions[rng.nextInt(directions.length)];// random search taken from miner bot
-                rc.move(randomDir);
+                Micro.doMicro(); // JUST MICRO BRO
+                //Direction randomDir = directions[rng.nextInt(directions.length)];// random search taken from miner bot
+                //rc.move(randomDir);
             }
             else{
                 turnsWithoutCombat ++;
@@ -114,7 +128,7 @@ public class Soldier extends RobotPlayer {
 
         }
         if (!onSite && enemies.length == 0 && !followingReport) {
-            doWander(rc, oneLine);
+            doWander(oneLine);
         }
 
     }
