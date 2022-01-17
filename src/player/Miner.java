@@ -7,11 +7,8 @@ public class Miner extends Bot{
     static MapLocation leadSource = null;
     static MapLocation[]leadSources = null;
     static boolean foundLead = false;
-
     static Direction oneLine = null;
-
     static RobotInfo[] enemies;
-
     static boolean danger = false;
     static int avoidIndex = 0;
 
