@@ -1,20 +1,35 @@
 package player;
 import battlecode.common.*;
 
+import java.util.Random;
 
-public class Miner extends Bot{
+
+public class Miner {
+    static int turnCount = 0;
     static MapLocation origin;
     static MapLocation leadSource = null;
     static MapLocation[]leadSources = null;
     static boolean foundLead = false;
+    static final Direction[] directions = {
+            Direction.NORTH,
+            Direction.NORTHEAST,
+            Direction.EAST,
+            Direction.SOUTHEAST,
+            Direction.SOUTH,
+            Direction.SOUTHWEST,
+            Direction.WEST,
+            Direction.NORTHWEST,
+    };
     static Direction oneLine = null;
+    public static final Random rng = new Random();
     static RobotInfo[] enemies;
+
     static boolean danger = false;
     static int avoidIndex = 0;
 
     public static void run(RobotController rc) throws GameActionException {
 
-        if(turnCount == 1){
+        if(turnCount == 0){
             origin = rc.getLocation();
             oneLine = directions[rng.nextInt(directions.length)];
         }
@@ -36,10 +51,10 @@ public class Miner extends Bot{
             }
         }
         for (Direction dir:directions){
-            if(rc.canMineLead(rc.adjacentLocation(dir))){
+            if(rc.canMineLead(rc.adjacentLocation(dir)) && rc.senseLead(rc.adjacentLocation(dir)) > 1){
                 rc.mineLead(rc.adjacentLocation(dir));
             }
-            else if (rc.canMineLead(rc.getLocation())) {
+            else if (rc.canMineLead(rc.getLocation()) && rc.senseLead(rc.getLocation()) > 1) {
                 rc.mineLead(rc.getLocation());
             }
         }
@@ -49,10 +64,12 @@ public class Miner extends Bot{
             leadSources = rc.senseNearbyLocationsWithLead(-1); // 100 bytecode, not that bad
             int i = 0;
             for (MapLocation source:leadSources) {
-                if(!rc.getLocation().equals(source) && rc.senseNearbyRobots(source,0,rc.getTeam()).length>0 && rc.senseLead(source) == 1) {
-                    leadSources[i] = null;
-                } else {
-                    leadSource = leadSources[i];
+                if(leadSources.length>0 && rc.canSenseLocation(source)) {
+                    if (!rc.getLocation().equals(source) && rc.senseNearbyRobots(source, 0, rc.getTeam()).length > 0 || rc.senseLead(source) == 1) {
+                        leadSources[i] = null;
+                    } else {
+                        leadSource = leadSources[i];
+                    }
                 }
                 i++;
             }
@@ -80,7 +97,7 @@ public class Miner extends Bot{
 
 
 
-
+        turnCount++;
 
     }
 }
