@@ -12,15 +12,7 @@ public class Misc extends Bot {
         }
 
     }
-    public static boolean tryAttack(MapLocation loc) throws GameActionException{
-        if(rc.canAttack(loc)){
-            rc.attack(loc);
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
+
     public static void doWander(Direction oneLine) throws GameActionException{
 
         rc.setIndicatorString("wandering");

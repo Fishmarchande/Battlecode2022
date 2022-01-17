@@ -14,16 +14,16 @@ public class Micro extends Bot {
 
         //move closer towards first enemy we see
 
-        if(numfriends>numenemies){
-            // more allies than enemies, we can attack
+        if(numfriends>numenemies){            // more allies than enemies, we can attack
+
+            Bot.tryAttack(enemies[0].getLocation());
+
+
             if(Misc.tryMove(rc.getLocation().directionTo(enemies[0].getLocation()))){//move towards cloesst one
 
             }
             else{
                 rc.move(randomDir);//if we can't move towards said enemy, move randomly (lets improve this)
-            }
-            if(rc.canAttack(closestEnemy.getLocation())){
-                rc.attack(closestEnemy.getLocation());
             }
         }
         else{ // retreat!

@@ -55,4 +55,13 @@ public class Bot {
         }
         //
     }
+    public static boolean tryAttack(MapLocation loc) throws GameActionException{
+        if(rc.canAttack(loc)){
+            rc.attack(loc);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }

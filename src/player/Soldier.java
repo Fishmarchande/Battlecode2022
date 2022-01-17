@@ -29,7 +29,16 @@ public class Soldier extends Bot {
             oneLine = directions[rng.nextInt(directions.length)];// random search taken from miner bot
         }
 
+
+
+
         if(enemies.length > 0){// generate combat report
+
+            turnsWithoutCombat = 0;// WE ARE IN COMBAT, TIME TO MICRO!
+            Micro.doMicro(); //
+
+
+
             rc.setIndicatorString("Write Combat Report");
             //time to generate combat report
             // we should probably make sure that robots in an already known combat don't report new combats
@@ -109,8 +118,7 @@ public class Soldier extends Bot {
             rc.setIndicatorString("ON SITE");// we are at a location where combat has been reported, fight for x turns,
                     // and if we find nothing then destroy current report and move on
             if(enemies.length > 0){
-                turnsWithoutCombat = 0;
-                Micro.doMicro(); // JUST MICRO BRO
+
                 //Direction randomDir = directions[rng.nextInt(directions.length)];// random search taken from miner bot
                 //rc.move(randomDir);
             }
