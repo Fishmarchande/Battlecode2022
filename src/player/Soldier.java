@@ -14,10 +14,12 @@ public class Soldier extends Bot {
     static int turnsWithoutCombat = 0;
     static int currentCr = -1;
     static int closestLoc;
+    static boolean isScout;
 
     public static void run(RobotController rc) throws GameActionException {
         if(turnCount == 0){
             Bot.init(rc);
+            isScout = (rng.nextInt(15) == 1);
         }
         Bot.updateInfo();
 
@@ -61,18 +63,7 @@ public class Soldier extends Bot {
             }
         }
 
-
-
-        if(enemies.length > 0){
-            RobotInfo target = enemies[0];
-            if(rc.canAttack(target.getLocation())){
-                rc.attack(target.getLocation());
-            }
-        }
-
-
-
-        if(true) {// , look for combat and fight!
+        if(!isScout) {// , look for combat and fight!
 
             if(!followingReport) { // if we haven't found combat yet, lets go to nearest report
                 for (int i = 0; i < 9; i++) {// look for open combat report
@@ -119,8 +110,6 @@ public class Soldier extends Bot {
                     // and if we find nothing then destroy current report and move on
             if(enemies.length > 0){
 
-                //Direction randomDir = directions[rng.nextInt(directions.length)];// random search taken from miner bot
-                //rc.move(randomDir);
             }
             else{
                 turnsWithoutCombat ++;
@@ -138,7 +127,9 @@ public class Soldier extends Bot {
         if (!onSite && enemies.length == 0 && !followingReport) {
             doWander(oneLine);
         }
-
+        if(isScout){
+            rc.setIndicatorString("Is Scout");
+        }
     }
 
 }

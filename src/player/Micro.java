@@ -27,7 +27,7 @@ public class Micro extends Bot {
             }
         }
         else{ // retreat!
-            Misc.tryMove(randomDir);
+            Misc.tryMove(enemies[0].getLocation().directionTo(rc.getLocation()));
         }
 
 
