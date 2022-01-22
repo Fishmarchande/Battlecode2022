@@ -15,11 +15,7 @@ public class Archon extends Bot{
             System.out.println(a);
         }
         int b = rc.readSharedArray(10);
-        if(b != 0 && !panic) {
-            stopProd = true;
-        } else {
-            stopProd = false;
-        }
+        stopProd = b != 0 && !panic;
         if (stopProd) {
             presumeDead++;
             System.out.println("Stopping production");
