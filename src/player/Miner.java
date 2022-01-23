@@ -5,7 +5,7 @@ import java.util.Random;
 
 
 public class Miner {
-    static int turnCount = 0;
+    static int turnCount = 0; //AGE
     static MapLocation origin;
     static MapLocation leadSource = null;
     static MapLocation[]leadSources = null;
@@ -31,7 +31,7 @@ public class Miner {
 
         if(turnCount == 0){
             origin = rc.getLocation();
-            oneLine = directions[rng.nextInt(directions.length)];
+            oneLine = directions[rng.nextInt(directions.length)]; //Direction it follows (straight line)
         }
 
         enemies = rc.senseNearbyRobots(-1, rc.getTeam().opponent());
@@ -48,14 +48,14 @@ public class Miner {
                     rc.move(rc.getLocation().directionTo(enemies[avoidIndex].getLocation()).opposite()); //Run opposite direction from enemy
                     System.out.println("Saw an hostile, running away");
                 }
-            }
+            } // If it sees an enemy that can cause damage, run opposite direction
         }
         for (Direction dir:directions){
             if(rc.canMineLead(rc.adjacentLocation(dir)) && rc.senseLead(rc.adjacentLocation(dir)) > 1){
-                rc.mineLead(rc.adjacentLocation(dir));
+                rc.mineLead(rc.adjacentLocation(dir)); //If it can mine lead nearby mine it
             }
             else if (rc.canMineLead(rc.getLocation()) && rc.senseLead(rc.getLocation()) > 1) {
-                rc.mineLead(rc.getLocation());
+                rc.mineLead(rc.getLocation()); //If it can mine lead at current location mine it
             }
         }
 
@@ -71,12 +71,12 @@ public class Miner {
                         leadSource = leadSources[i];
                     }
                 }
-                i++;
+                i++; //Find a spot with more than one lead that isn't occupied and set to leadSource
             }
         }
         // if there is a place for us to mine, then lets try to go to the first one
         foundLead = leadSource != null;
-        if(foundLead){
+        if(foundLead){ //If the bot knows where the lead is, then walk to it
             if(rc.canMove(rc.getLocation().directionTo(leadSource))) {
                 rc.move(rc.getLocation().directionTo(leadSource));
             }
