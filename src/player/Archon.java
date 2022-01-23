@@ -9,7 +9,12 @@ public class Archon extends Bot{
     static boolean stopProd = false;
     static int presumeDead = 0;
     public static void run(RobotController rc) throws GameActionException {
-
+        /*
+        TO DO: new variable of int initially set to 0
+        After building a bot (unless panic) add the number of (archons -1) to it
+        Only build bots (unless panic) when the variable equals 0
+        Decrease the variable by one (if not 0) towards the end
+         */
         int a = rc.readSharedArray(0);
         if(a != 0){
             System.out.println(a);
