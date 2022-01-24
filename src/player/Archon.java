@@ -8,6 +8,7 @@ public class Archon extends Bot{
     static boolean needHelp = false;
     static boolean stopProd = false;
     static int presumeDead = 0;
+    static int totalMiners = 4;
     public static void run(RobotController rc) throws GameActionException {
         /*
         TO DO: new variable of int initially set to 0
@@ -15,6 +16,7 @@ public class Archon extends Bot{
         Only build bots (unless panic) when the variable equals 0
         Decrease the variable by one (if not 0) towards the end
          */
+        totalMiners = 5 * rc.getArchonCount();
         int a = rc.readSharedArray(0);
         if(a != 0){
             System.out.println(a);
@@ -38,7 +40,7 @@ public class Archon extends Bot{
             }
             // Let's try to build a miner.
             rc.setIndicatorString("Trying to build a miner");
-            if (rc.canBuildRobot(RobotType.MINER, dir) && minerCount <4 && !stopProd) {
+            if (rc.canBuildRobot(RobotType.MINER, dir) && minerCount < totalMiners && !stopProd) {
                 rc.buildRobot(RobotType.MINER, dir);
                 minerCount ++;
             }
