@@ -1,13 +1,14 @@
 package player;
-import battlecode.common.*;
+
+import battlecode.common.Direction;
 import battlecode.common.GameActionException;
-import player.Misc.*;
+import battlecode.common.MapLocation;
 
 public class Micro extends Bot {
-
+    public static int retreatTimes = 0;
     public static void doMicro() throws GameActionException {
         System.out.println();
-        Direction randomDir = directions[rng.nextInt(directions.length)];// random search taken from miner bot
+        // random search taken from miner bot
 
 
         //move closer towards first enemy we see
@@ -19,13 +20,16 @@ public class Micro extends Bot {
             Bot.tryAttack(closestTarget.getLocation());
             Bot.tryAttack(enemies[0].getLocation());
             rc.setIndicatorString(enemies[0].getLocation().toString());
-
-            if(Misc.tryMove(rc.getLocation().directionTo(closestTarget.getLocation()),true)); //move towards cloesst one
+            retreatTimes = 0;
+            Misc.tryMove(rc.getLocation().directionTo(closestTarget.getLocation()), true);//move towards the closest one
 
 
         }
-        else{ // retreat!
+        else if (retreatTimes < 3){ // retreat!
             retreat();
+        } else {
+            retreatTimes = 0;
+            Bot.tryAttack(closestTarget.getLocation());
         }
 
 
