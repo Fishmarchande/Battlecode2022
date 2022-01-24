@@ -12,13 +12,15 @@ public class Micro extends Bot {
 
         //move closer towards first enemy we see
 
-        if(numHostileEnemies>numHostileFriends){            // more allies than enemies, we can attack
+        rc.setIndicatorString(numHostileEnemies+" enemies, friends:" + numHostileFriends);
 
+        if(numHostileEnemies<numHostileFriends){            // more allies than enemies, we can attack
+            rc.setIndicatorString("AAH");
             Bot.tryAttack(closestTarget.getLocation());
             Bot.tryAttack(enemies[0].getLocation());
+            rc.setIndicatorString(enemies[0].getLocation().toString());
 
-
-            Misc.tryMove(rc.getLocation().directionTo(closestTarget.getLocation())); //move towards cloesst one
+            if(Misc.tryMove(rc.getLocation().directionTo(closestTarget.getLocation()),true)); //move towards cloesst one
 
 
         }

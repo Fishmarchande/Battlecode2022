@@ -12,7 +12,20 @@ public class Misc extends Bot {
         }
 
     }
+    public static boolean tryMove(Direction dir, boolean turn) throws GameActionException {
+        tryMove(dir);
+        Direction newdir = dir.rotateRight();
+        for(int i = 0; i < 8; i++) {//keep trying to follow the right of the object
+            newdir = newdir.rotateRight();
+            if(tryMove(dir)){
+                return true;
+            }
+            rc.setIndicatorString("ROTATING");
+        }
+        rc.setIndicatorString("failed to rotate...");
 
+        return false;
+    }
     public static void doWander(Direction oneLine) throws GameActionException{
 
         rc.setIndicatorString("wandering");

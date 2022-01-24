@@ -87,14 +87,7 @@ public class Soldier extends Bot {
             }
             if(targetLocation!= null) {
                 rc.setIndicatorString(("Moving to site ") + (targetLocation));
-                if (rc.canMove(rc.getLocation().directionTo(targetLocation))) {
-                    rc.move(rc.getLocation().directionTo(targetLocation));
-                } else {
-                    if (rc.canMove(rc.getLocation().directionTo(targetLocation).rotateRight())) {
-
-                        rc.move(rc.getLocation().directionTo(targetLocation).rotateRight());
-                    }
-                }
+                Misc.tryMove(rc.getLocation().directionTo(targetLocation), true);
             }
             if(followingReport) {
                 if (rc.getLocation().isWithinDistanceSquared(targetLocation, 9)) { // if we are already at a

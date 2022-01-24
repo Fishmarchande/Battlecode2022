@@ -43,8 +43,8 @@ public class Bot {
     }
     public static void updateInfo(){// update regularly use information
         turnCount++;
-        enemies = rc.senseNearbyRobots(20, rc.getTeam().opponent());
-        friends = rc.senseNearbyRobots(20, rc.getTeam());
+        enemies = rc.senseNearbyRobots(-1, rc.getTeam().opponent());
+        friends = rc.senseNearbyRobots(-1, rc.getTeam());
         numfriends = friends.length;
         numenemies = enemies.length;
 
@@ -63,7 +63,7 @@ public class Bot {
         }
         for(RobotInfo r:friends){
             if(r.getType() == RobotType.SOLDIER ||r.getType() == RobotType.WATCHTOWER || r.getType() == RobotType.SAGE){
-                numHostileEnemies++;
+                numHostileFriends++;
             }
         }
         //
