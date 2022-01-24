@@ -41,7 +41,6 @@ public class Soldier extends Bot {
 
 
 
-            rc.setIndicatorString("Write Combat Report");
             //time to generate combat report
             // we should probably make sure that robots in an already known combat don't report new combats
             for(int i = 0; i<9; i++){// look for open combat report
@@ -127,9 +126,5 @@ public class Soldier extends Bot {
         if (!onSite && enemies.length == 0 && !followingReport) {
             doWander(oneLine);
         }
-        if(isScout){
-            rc.setIndicatorString("Is Scout");
-        }
     }
-
 }
