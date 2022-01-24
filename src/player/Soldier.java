@@ -38,7 +38,7 @@ public class Soldier extends Bot {
 
             turnsWithoutCombat = 0;// WE ARE IN COMBAT, TIME TO MICRO!
             Micro.doMicro(); //
-
+            oneLine = rc.getLocation().directionTo(enemies[0].getLocation());
 
 
             //time to generate combat report
@@ -106,7 +106,7 @@ public class Soldier extends Bot {
             else{
                 turnsWithoutCombat ++;
             }
-            if(turnsWithoutCombat>5){
+            if(turnsWithoutCombat>3 ){
                 onSite = false;
                 rc.writeSharedArray(currentCr,0);
                 followingReport = false;
