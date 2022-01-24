@@ -76,7 +76,7 @@ public class Miner {
         }
         // if there is a place for us to mine, then lets try to go to the first one
         foundLead = leadSource != null;
-        if(foundLead){ //If the bot knows where the lead is, then walk to it
+        if(foundLead && rc.senseLead(rc.getLocation()) == 0){ //If the bot knows where the lead is, then walk to it
             if(rc.canMove(rc.getLocation().directionTo(leadSource))) {
                 rc.move(rc.getLocation().directionTo(leadSource));
             }
