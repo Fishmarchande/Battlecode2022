@@ -16,7 +16,7 @@ public class Archon extends Bot{
         Only build bots (unless panic) when the variable equals 0
         Decrease the variable by one (if not 0) towards the end
          */
-        totalMiners = 5 * rc.getArchonCount();
+        totalMiners = 4;
         int a = rc.readSharedArray(0);
         if(a != 0){
             System.out.println(a);
@@ -32,6 +32,9 @@ public class Archon extends Bot{
             stopProd = false;
             rc.writeSharedArray(10, 0); //Presume attacked bot is killed
             System.out.println("Defense of archon failed; resuming production");
+        }
+        if(turnCount > 300 && turnCount % 30 == 0) {
+            totalMiners++;
         }
         Direction dir = directions[rng.nextInt(directions.length)];
             if(rc.canBuildRobot(RobotType.SOLDIER, dir) && panic) {
