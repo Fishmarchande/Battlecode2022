@@ -14,7 +14,7 @@ public class Micro extends Bot {
 
         rc.setIndicatorString(numHostileEnemies+" enemies, friends:" + numHostileFriends);
 
-        if(numHostileEnemies<numHostileFriends){            // more allies than enemies, we can attack
+        if(numHostileEnemies<(numHostileFriends+1)){            // more allies than enemies, we can attack
             rc.setIndicatorString("AAH");
             Bot.tryAttack(closestTarget.getLocation());
             Bot.tryAttack(enemies[0].getLocation());
