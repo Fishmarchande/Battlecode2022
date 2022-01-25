@@ -6,30 +6,23 @@ import player.Misc.*;
 public class Micro extends Bot {
 
     public static void doMicro() throws GameActionException {
-        System.out.println();
-        Direction randomDir = directions[rng.nextInt(directions.length)];// random search taken from miner bot
-
 
         //move closer towards first enemy we see
 
-        rc.setIndicatorString(numHostileEnemies+" enemies, friends:" + numHostileFriends);
-
-        if(numHostileEnemies<(numHostileFriends+1)){            // more allies than enemies, we can attack
-            rc.setIndicatorString("AAH");
-            Bot.tryAttack(closestTarget.getLocation());
-            Bot.tryAttack(enemies[0].getLocation());
-            rc.setIndicatorString(enemies[0].getLocation().toString());
-
-            if(Misc.tryMove(rc.getLocation().directionTo(closestTarget.getLocation()),true)); //move towards cloesst one
-
-
+        tryAttack(closestTarget.getLocation());
+        tryAttack(enemies[0].getLocation());
+        rc.setIndicatorString("REACHED");
+        Misc.tryMove(rc.getLocation().directionTo(enemies[0].getLocation()));
+       /* if(tryAttack(closestTarget.getLocation())){
+            rc.setIndicatorString("Can attack");
         }
-        else{ // retreat!
-            retreat();
+        else{
+            tryAttack(enemies[0].getLocation());
+            rc.setIndicatorString("Can't attack");
         }
-
-
-
+        Misc.tryMove(rc.getLocation().directionTo(enemies[0].getLocation()), true);
+        rc.setIndicatorString("move");
+        */
     }
     public static void retreat() throws GameActionException {
         for (Direction d:directions){// look in each adjacent location
@@ -43,7 +36,7 @@ public class Micro extends Bot {
         //if we reached here, it means there is no place to retreat to
         //we are surrounded!
         Bot.tryAttack(closestTarget.getLocation());
-
+        Bot.tryAttack(enemies[0].getLocation());
 
     }
 }

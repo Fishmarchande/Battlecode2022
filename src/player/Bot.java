@@ -74,8 +74,6 @@ public class Bot {
             rc.attack(loc);
             return true;
         }
-        else{
-            return false;
-        }
+        return false;
     }
 }

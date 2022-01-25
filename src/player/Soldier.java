@@ -35,12 +35,9 @@ public class Soldier extends Bot {
 
 
         if(enemies.length > 0){// generate combat report
-
+            Micro.doMicro();
             turnsWithoutCombat = 0;// WE ARE IN COMBAT, TIME TO MICRO!
-            Micro.doMicro(); //
             oneLine = rc.getLocation().directionTo(enemies[0].getLocation());
-
-
             //time to generate combat report
             // we should probably make sure that robots in an already known combat don't report new combats
             for(int i = 0; i<9; i++){// look for open combat report
