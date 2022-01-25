@@ -1,10 +1,11 @@
 package player;
-import battlecode.common.*;
+
+import battlecode.common.Direction;
 import battlecode.common.GameActionException;
-import player.Misc.*;
+import battlecode.common.MapLocation;
 
 public class Micro extends Bot {
-
+    public static int retreatTimes = 0;
     public static void doMicro() throws GameActionException {
 
         //move closer towards first enemy we see
